@@ -1,0 +1,32 @@
+.form__wrapper {
+  margin-top: 25%;
+}
+.form__wrapper h1 {
+  font-family: "Overpass", sans-serif;
+}
+.search__form {
+  display: flex;
+}
+.search__form button {
+  margin-left: 10px;
+}
+.dashbord h2 {
+  text-align: center;
+}
+.double__btn {
+  display: flex;
+  justify-content: space-between;
+}
+.ant-page-header {
+  padding: 16px 0px;
+}
+.spin {
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}
+.ant-form-item-control {
+  line-height: 1.8;
+}
