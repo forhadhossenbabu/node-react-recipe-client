@@ -40,7 +40,12 @@ const Recipes = ({ existingRecipes, loading, handleDeleteRecipe, history }) => {
               <Card
                 style={{ marginTop: 16 }}
                 actions={[
-                  <Icon type="layout" theme="twoTone" key="view" />,
+                  <Icon
+                    type="layout"
+                    theme="twoTone"
+                    key="view"
+                    onClick={() => history.push(`/app/recipe/${recipe.id}`)}
+                  />,
                   <Icon
                     type="edit"
                     key="edit"

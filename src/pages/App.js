@@ -8,6 +8,7 @@ import Home from "./home.page";
 import Dashbord from "./dashbord.page";
 import CreateRecipe from "./createRecipe.page";
 import EditRecipe from "./edit-recipe.page";
+import Recipe from "./recipe.page";
 
 import "./main.css";
 
@@ -28,6 +29,7 @@ const App = () => (
         path="/app/edit-recipe/:id"
         component={EditRecipe}
       />
+      <ProtectedRoute exact path="/app/recipe/:id" component={Recipe} />
       <Route component={() => "404 NOT FOUND"} path="*" />
     </Switch>
   </BrowserRouter>

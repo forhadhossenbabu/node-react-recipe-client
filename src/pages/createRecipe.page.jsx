@@ -3,7 +3,7 @@ import { Form, Input, Button, Typography, Row, Col, PageHeader } from "antd";
 import axios from "axios";
 const { Text } = Typography;
 
-let url = "http://localhost:4000/";
+let url = "https://node-react-recipe.herokuapp.com/";
 
 class CreateRecipeForm extends React.Component {
   state = {

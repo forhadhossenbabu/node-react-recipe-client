@@ -6,7 +6,7 @@ import auth from "../utils/auth";
 
 const { Text } = Typography;
 
-let url = "http://localhost:4000/";
+let url = "https://node-react-recipe.herokuapp.com/";
 
 class NormalLoginForm extends React.Component {
   state = {

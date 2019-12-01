@@ -6,7 +6,7 @@ import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 import Recipes from "../components/recipes.component";
 
-let url = "http://localhost:4000/";
+let url = "https://node-react-recipe.herokuapp.com/";
 
 class Dashbord extends React.Component {
   state = {
@@ -81,9 +81,12 @@ class Dashbord extends React.Component {
         <div className="container">
           <div className="dashbord">
             <h2>Node React Recipe Dashbord</h2>
-            <Row type="flex" justify="space-around">
-              <Col span={4}>
-                <Button type="primary" block>
+            <Row>
+              <Col
+                span={5}
+                style={{ justifyContent: "center", display: "flex" }}
+              >
+                <Button type="primary">
                   <Link to="/app/create-recipe">Create Recipe</Link>
                 </Button>
               </Col>
@@ -96,7 +99,10 @@ class Dashbord extends React.Component {
                   <Button>Search</Button>
                 </div>
               </Col>
-              <Col span={4}>
+              <Col
+                span={5}
+                style={{ justifyContent: "center", display: "flex" }}
+              >
                 <Button
                   onClick={() =>
                     auth.logout(() => this.props.history.push("/"))

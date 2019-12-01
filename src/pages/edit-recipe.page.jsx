@@ -15,7 +15,7 @@ import { Redirect } from "react-router-dom";
 import { isLength, isURL } from "validator";
 
 const { Text } = Typography;
-let url = "http://localhost:4000/";
+let url = "https://node-react-recipe.herokuapp.com/";
 
 class EditRecipePage extends React.Component {
   state = {
@@ -64,7 +64,7 @@ class EditRecipePage extends React.Component {
     if (!isLength(recipe.subTitle, { min: 4, max: 300 })) {
       error.subTitle = "Sub Title needs minimum 4 words";
     }
-    if (!isLength(recipe.description, { min: 4, max: 500 })) {
+    if (!isLength(recipe.description, { min: 4 })) {
       error.description = "Description needs minimum 4 words";
     }
     if (!isURL(recipe.mainImageURL)) {
