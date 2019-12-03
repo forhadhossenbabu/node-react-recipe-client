@@ -1,2 +1,2 @@
-const api_url = "http://localhost:4000/";
+const api_url = "https://node-react-recipe.herokuapp.com/";
 export default api_url;
