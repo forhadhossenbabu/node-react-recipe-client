@@ -3,10 +3,9 @@ import { Row, Col, Form, Icon, Input, Button, Typography } from "antd";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import auth from "../utils/auth";
+import api_url from "../utils/config";
 
 const { Text } = Typography;
-
-let url = "https://node-react-recipe.herokuapp.com/";
 
 class NormalLoginForm extends React.Component {
   state = {
@@ -20,7 +19,7 @@ class NormalLoginForm extends React.Component {
       if (!err) {
         console.log("Received values of form: ", values);
         try {
-          await axios.post(`${url}login`, { ...values }).then(res => {
+          await axios.post(`${api_url}login`, { ...values }).then(res => {
             if (res.data.status) {
               auth.login(res.data.token, () => this.props.history.push("/app"));
             }

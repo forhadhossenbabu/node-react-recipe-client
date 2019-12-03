@@ -1,9 +1,9 @@
 import React from "react";
 import { Form, Input, Button, Typography, Row, Col, PageHeader } from "antd";
 import axios from "axios";
+import api_url from "../utils/config";
 const { Text } = Typography;
-
-let url = "https://node-react-recipe.herokuapp.com/";
+const { TextArea } = Input;
 
 class CreateRecipeForm extends React.Component {
   state = {
@@ -19,7 +19,7 @@ class CreateRecipeForm extends React.Component {
         try {
           await axios
             .post(
-              `${url}createRecipe`,
+              `${api_url}createRecipe`,
               { ...values },
               {
                 headers: {
@@ -84,7 +84,7 @@ class CreateRecipeForm extends React.Component {
                         message: "Please input your recipe description!"
                       }
                     ]
-                  })(<Input placeholder="Recipe Description" />)}
+                  })(<TextArea rows={4} placeholder="Recipe Description" />)}
                 </Form.Item>
 
                 <Form.Item>

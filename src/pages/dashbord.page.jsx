@@ -1,24 +1,33 @@
 import React from "react";
-import { Button, Row, Col, Input } from "antd";
+import { Button, Row, Col, Input, Alert } from "antd";
 import auth from "../utils/auth";
 import jwt_decode from "jwt-decode";
 import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 import Recipes from "../components/recipes.component";
-
-let url = "https://node-react-recipe.herokuapp.com/";
+import PaginationComponent from "../components/pagination.component";
+import api_url from "../utils/config";
 
 class Dashbord extends React.Component {
   state = {
     user: jwt_decode(JSON.parse(localStorage.getItem("token"))),
     existingRecipes: [],
-    loading: false
+    currentPage: 1,
+    recipePerPage: 4,
+    searchingKey: "",
+    searched: false
   };
+
+  setCurrentPage = pageNumber => {
+    this.setState({ currentPage: pageNumber });
+  };
+
+  paginate = pageNumber => this.setCurrentPage(pageNumber);
 
   async componentDidMount() {
     this.setState({ loading: true });
     await axios
-      .get(`${url}recipes`, {
+      .get(`${api_url}recipes`, {
         headers: {
           Authorization: JSON.parse(localStorage.getItem("token"))
         }
@@ -26,8 +35,7 @@ class Dashbord extends React.Component {
       .then(res => {
         if (res.data.status) {
           this.setState({
-            existingRecipes: res.data.existingRecipes,
-            loading: false
+            existingRecipes: res.data.existingRecipes
           });
         }
       })
@@ -38,20 +46,57 @@ class Dashbord extends React.Component {
         });
       });
   }
-  handleSearchChange = e => {
-    const { existingRecipes } = this.state;
 
+  handleSearchChange = e => {
     this.setState({
-      existingRecipes: existingRecipes.filter(recipe =>
-        recipe.title.toLowerCase().includes(e.target.value)
-      )
+      searchingKey: e.target.value.trim().toLowerCase()
     });
+  };
+
+  onSearchSubmit = async e => {
+    e.preventDefault();
+    const { searchingKey, existingRecipes } = this.state;
+
+    if (searchingKey === "") {
+      alert("Please enter recipe name.");
+    } else {
+      const mathcedRecipe = existingRecipes.filter(recipe =>
+        recipe.title.toLowerCase().match(searchingKey)
+      );
+
+      this.setState({
+        existingRecipes: mathcedRecipe,
+        searched: true
+      });
+    }
   };
 
   handleDeleteRecipe = async recipeId => {
     this.setState({ loading: true });
     await axios
-      .delete(`${url}deleteRecipe/${recipeId}`, {
+      .delete(`${api_url}deleteRecipe/${recipeId}`, {
+        headers: {
+          Authorization: JSON.parse(localStorage.getItem("token"))
+        }
+      })
+      .then(res => {
+        if (res.data.status) {
+          this.setState({
+            existingRecipes: res.data.existingRecipes
+          });
+        }
+      })
+      .catch(err => {
+        auth.logout(() => {
+          this.setState({ user: null });
+          this.props.history.push("/");
+        });
+      });
+  };
+
+  handleRemoveSearch = async () => {
+    await axios
+      .get(`${api_url}recipes`, {
         headers: {
           Authorization: JSON.parse(localStorage.getItem("token"))
         }
@@ -60,7 +105,8 @@ class Dashbord extends React.Component {
         if (res.data.status) {
           this.setState({
             existingRecipes: res.data.existingRecipes,
-            loading: false
+            searched: false,
+            searchingKey: ""
           });
         }
       })
@@ -73,7 +119,20 @@ class Dashbord extends React.Component {
   };
 
   render() {
-    const { existingRecipes, loading } = this.state;
+    const {
+      currentPage,
+      recipePerPage,
+      existingRecipes,
+      searched,
+      searchingKey
+    } = this.state;
+    const indexOfLastPost = currentPage * recipePerPage;
+    const indexOfFirstPost = indexOfLastPost - recipePerPage;
+    const currentRecipes = existingRecipes.slice(
+      indexOfFirstPost,
+      indexOfLastPost
+    );
+
     if (!auth.isAuthenticated()) {
       return <Redirect to="/" />;
     } else {
@@ -92,11 +151,17 @@ class Dashbord extends React.Component {
               </Col>
               <Col span={14}>
                 <div className="search__form">
-                  <Input
-                    placeholder="Search By Recipe Name..."
-                    onChange={this.handleSearchChange}
-                  />
-                  <Button>Search</Button>
+                  <form onSubmit={this.onSearchSubmit} className="custom__form">
+                    <Input
+                      placeholder="Search By Recipe Name..."
+                      onChange={this.handleSearchChange}
+                      value={searchingKey}
+                    />
+                    <Button htmlType="submit">Search</Button>
+                    {searched ? (
+                      <Button onClick={this.handleRemoveSearch}>Clear</Button>
+                    ) : null}
+                  </form>
                 </div>
               </Col>
               <Col
@@ -115,11 +180,27 @@ class Dashbord extends React.Component {
             </Row>
             <Row>
               <Col span={14} offset={5}>
-                <Recipes
-                  loading={loading}
-                  existingRecipes={existingRecipes}
-                  handleDeleteRecipe={this.handleDeleteRecipe}
-                />
+                {existingRecipes.length === 0 ? (
+                  <Alert
+                    style={{ marginTop: 16 }}
+                    message="You Don't Have Recipe."
+                    description="You can create a Recipe"
+                    type="info"
+                    showIcon
+                  />
+                ) : (
+                  <div>
+                    <Recipes
+                      existingRecipes={currentRecipes}
+                      handleDeleteRecipe={this.handleDeleteRecipe}
+                    />
+                    <PaginationComponent
+                      recipePerPage={recipePerPage}
+                      totalRecipes={existingRecipes.length}
+                      paginate={this.paginate}
+                    />
+                  </div>
+                )}
               </Col>
             </Row>
           </div>

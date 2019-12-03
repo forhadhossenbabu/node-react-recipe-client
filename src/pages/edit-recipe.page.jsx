@@ -13,9 +13,10 @@ import axios from "axios";
 import auth from "../utils/auth";
 import { Redirect } from "react-router-dom";
 import { isLength, isURL } from "validator";
+import api_url from "../utils/config";
 
 const { Text } = Typography;
-let url = "https://node-react-recipe.herokuapp.com/";
+const { TextArea } = Input;
 
 class EditRecipePage extends React.Component {
   state = {
@@ -27,7 +28,7 @@ class EditRecipePage extends React.Component {
   async componentDidMount() {
     this.setState({ loading: true });
     await axios
-      .get(`${url}recipe/${this.props.match.params.id}`, {
+      .get(`${api_url}recipe/${this.props.match.params.id}`, {
         headers: {
           Authorization: JSON.parse(localStorage.getItem("token"))
         }
@@ -83,7 +84,7 @@ class EditRecipePage extends React.Component {
 
       await axios
         .put(
-          `${url}update-recipe/${this.props.match.params.id}`,
+          `${api_url}update-recipe/${this.props.match.params.id}`,
           { ...recipe },
           {
             headers: {
@@ -145,11 +146,12 @@ class EditRecipePage extends React.Component {
                     </Form.Item>
 
                     <Form.Item className={error.description ? "has-error" : ""}>
-                      <Input
+                      <TextArea
                         placeholder="Recipe Description"
                         onChange={this.handleChange}
                         name="description"
                         defaultValue={recipe["description"]}
+                        rows={4}
                       />
                       {error.description && (
                         <Text type="danger">{error.description}</Text>

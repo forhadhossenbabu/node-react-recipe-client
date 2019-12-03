@@ -1,11 +1,10 @@
 import React from "react";
 import axios from "axios";
-import { Row, Col, Card, Skeleton, Typography, PageHeader } from "antd";
+import api_url from "../utils/config";
+import { Row, Col, Card, Skeleton, PageHeader } from "antd";
 
 const { Meta } = Card;
-const { Text } = Typography;
 
-let url = "https://node-react-recipe.herokuapp.com/";
 class Recipe extends React.Component {
   state = {
     recipe: {},
@@ -15,7 +14,7 @@ class Recipe extends React.Component {
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get(`${url}recipe/${this.props.match.params.id}`)
+      .get(`${api_url}recipe/${this.props.match.params.id}`)
       .then(res => {
         if (res.data.status) {
           this.setState({
@@ -32,7 +31,6 @@ class Recipe extends React.Component {
 
   render() {
     const { loading, recipe } = this.state;
-    console.log(recipe);
     return (
       <div>
         <Row>
@@ -47,25 +45,27 @@ class Recipe extends React.Component {
                   <Skeleton loading={true} active />
                 </Card>
               ) : (
-                <Card style={{ marginTop: 15 }}>
+                <Card>
                   <img
                     src={recipe.mainImageURL}
                     alt={recipe.title}
                     style={{ width: "100%", marginBottom: "20px" }}
                   />
                   <Skeleton loading={false} active>
-                    <Meta title={recipe.title} description={recipe.subTitle} />
+                    <Meta
+                      title={"Title: " + recipe.title}
+                      description={"Sub Title: " + recipe.subTitle}
+                    />
                   </Skeleton>
                   {!loading && (
-                    <Text style={{ marginTop: "16px" }}>
-                      {recipe.description}
-                    </Text>
+                    <p style={{ marginTop: 15 }}>
+                      {"Description: " + recipe.description}
+                    </p>
                   )}
-                  <br />
                   {!loading && (
-                    <Text style={{ marginTop: "16px" }} mark>
-                      {recipe.ending}
-                    </Text>
+                    <p style={{ marginTop: "16px", marginBottom: "0px" }}>
+                      {"Ending: " + recipe.ending}
+                    </p>
                   )}
                 </Card>
               )}

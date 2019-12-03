@@ -30,3 +30,147 @@
 .ant-form-item-control {
   line-height: 1.8;
 }
+
+.paginate {
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+.paginate ul {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  list-style: none;
+  -webkit-font-feature-settings: "tnum";
+  font-feature-settings: "tnum";
+}
+.paginate ul li {
+  display: inline-block;
+}
+.paginate ul li a {
+  display: inline-block;
+  min-width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  font-family: Arial;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  outline: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.custom__form {
+  width: 100%;
+  display: flex;
+}
+/******************************
+Flexbox Layout
+*******************************/
+
+.header,
+.nav {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.header {
+  justify-content: space-between;
+}
+
+.nav {
+  -webkit-flex: 1;
+  flex: 1;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+@media all and (min-width: 640px) {
+  .header,
+  .nav {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
+}
+
+@media all and (min-width: 1030px) {
+  .nav {
+    -webkit-flex: none;
+    flex: none;
+  }
+}
+
+/******************************
+Treehouse Styling
+*******************************/
+
+.home {
+  margin: 0;
+  font-family: Helvetica;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/25480/hero-img.jpg")
+    top center no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.header {
+  padding: 20px 0;
+  margin: 0 auto;
+}
+
+.logo {
+  width: 195px;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+.nav {
+  list-style: none;
+}
+
+.nav li {
+  margin: 12px 0 12px 28px;
+}
+
+.nav li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.nav li a:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nav li:last-child a {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  transition: 200ms ease-in-out;
+  padding: 8px 16px 7px;
+}
+
+.nav li:last-child a:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+@media all and (min-width: 1030px) {
+  .header {
+    width: 1030px;
+    min-width: 768px;
+  }
+}

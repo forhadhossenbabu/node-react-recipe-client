@@ -1,12 +1,12 @@
 import React from "react";
-import { Skeleton, Card, Icon, Modal, Alert } from "antd";
+import { Skeleton, Card, Icon, Modal } from "antd";
 import { withRouter } from "react-router-dom";
 
 const { Meta } = Card;
 
 const { confirm } = Modal;
 
-const Recipes = ({ existingRecipes, loading, handleDeleteRecipe, history }) => {
+const Recipes = ({ existingRecipes, handleDeleteRecipe, history }) => {
   function showConfirm(recipeId) {
     confirm({
       title: "Do you want to delete these items?",
@@ -19,58 +19,40 @@ const Recipes = ({ existingRecipes, loading, handleDeleteRecipe, history }) => {
     });
   }
 
+  console.log(existingRecipes.length);
+
   return (
     <div>
-      {loading ? (
-        <Card style={{ marginTop: 20 }}>
-          <Skeleton loading={true} active />
-        </Card>
-      ) : (
-        <div>
-          {existingRecipes.length === 0 ? (
-            <Alert
-              style={{ marginTop: 16 }}
-              message="You Don't Have Recipe."
-              description="You can create a Recipe"
-              type="info"
-              showIcon
+      {existingRecipes.map((recipe, idx) => (
+        <Card
+          style={{ marginTop: 16 }}
+          actions={[
+            <Icon
+              type="layout"
+              theme="twoTone"
+              key="view"
+              onClick={() => history.push(`/app/recipe/${recipe.id}`)}
+            />,
+            <Icon
+              type="edit"
+              key="edit"
+              theme="twoTone"
+              onClick={() => history.push(`/app/edit-recipe/${recipe.id}`)}
+            />,
+            <Icon
+              type="close-circle"
+              key="delete recipe"
+              theme="twoTone"
+              onClick={() => showConfirm(recipe.id)}
             />
-          ) : (
-            existingRecipes.map((recipe, idx) => (
-              <Card
-                style={{ marginTop: 16 }}
-                actions={[
-                  <Icon
-                    type="layout"
-                    theme="twoTone"
-                    key="view"
-                    onClick={() => history.push(`/app/recipe/${recipe.id}`)}
-                  />,
-                  <Icon
-                    type="edit"
-                    key="edit"
-                    theme="twoTone"
-                    onClick={() =>
-                      history.push(`/app/edit-recipe/${recipe.id}`)
-                    }
-                  />,
-                  <Icon
-                    type="close-circle"
-                    key="delete recipe"
-                    theme="twoTone"
-                    onClick={() => showConfirm(recipe.id)}
-                  />
-                ]}
-                key={idx}
-              >
-                <Skeleton loading={false} active>
-                  <Meta title={recipe.title} description={recipe.subTitle} />
-                </Skeleton>
-              </Card>
-            ))
-          )}
-        </div>
-      )}
+          ]}
+          key={idx}
+        >
+          <Skeleton loading={false} active>
+            <Meta title={recipe.title} description={recipe.subTitle} />
+          </Skeleton>
+        </Card>
+      ))}
     </div>
   );
 };
